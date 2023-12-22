@@ -1,4 +1,7 @@
 pandas==2.1.4
+tifffile==2023.12.9
+optuna==3.5.0
+lightgbm==4.2.0
 dvc==3.33.4
 mlflow==2.9.2
 notebook==7.0.6
