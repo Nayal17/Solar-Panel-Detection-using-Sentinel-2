@@ -3,6 +3,8 @@ import yaml
 import json
 import joblib
 import base64
+import tifffile
+import numpy as np
 from typing import Any
 from pathlib import Path
 from SolarPanelDetection import logger
@@ -49,6 +51,26 @@ def create_directories(path_to_directories: list, verbose=True):
         if verbose:
             logger.info(f"created directory at: {path}")
 
+@ensure_annotations
+def read_tiff(path: Path) -> np.ndarray:
+    """reads tiff file and returns
+
+    Args:
+        path (str): path like input
+
+    Raises:
+        e: if tiff file doesn't exist
+
+    Returns:
+        img: np.ndarray
+    """
+    try:
+        img = tifffile.imread(path)
+        logger.info(f"tiff file: {path} loaded successfully")
+        return img
+
+    except Exception as e:
+        raise e
 
 @ensure_annotations
 def load_json(path: Path) -> ConfigBox:
@@ -119,3 +141,4 @@ def get_size(path: Path) -> str:
     """
     size_in_kb = round(os.path.getsize(path)/1024)
     return f"~ {size_in_kb} KB"
+
