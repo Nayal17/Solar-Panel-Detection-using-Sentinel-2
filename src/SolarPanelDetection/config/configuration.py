@@ -43,13 +43,13 @@ class ConfigurationManager:
     
     def get_training_config(self) -> TrainingConfig:
 
-        create_directories([Path(self.config.training.root_dir)])
-
+        create_directories([Path(self.config.training.root_dir), Path(self.config.training.weights_dir)])
         prepare_training_config = TrainingConfig(
             features=self.params.features,
             n_splits=self.params.n_splits,
-            lgb_params=self.params.lbg_params,
-            model_save_path=self.config.training.model_save_path
+            lgb_params=self.params.lgb_params,
+            weights_dir=self.config.training.weights_dir,
+            df_path = self.config.data_preparation.df_save_path
         )
 
         return prepare_training_config

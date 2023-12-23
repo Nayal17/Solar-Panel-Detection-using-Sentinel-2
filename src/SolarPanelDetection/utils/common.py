@@ -5,6 +5,7 @@ import joblib
 import base64
 import tifffile
 import numpy as np
+import pandas as pd
 from typing import Any
 from pathlib import Path
 from SolarPanelDetection import logger
@@ -68,6 +69,27 @@ def read_tiff(path: Path) -> np.ndarray:
         img = tifffile.imread(path)
         logger.info(f"tiff file: {path} loaded successfully")
         return img
+
+    except Exception as e:
+        raise e
+    
+@ensure_annotations
+def read_csv(path: Path) -> pd.DataFrame:
+    """reads csv file and returns
+
+    Args:
+        path (str): path like input
+
+    Raises:
+        e: if csv file doesn't exist
+
+    Returns:
+        img: pd.DataFrame
+    """
+    try:
+        df = pd.read_csv(path)
+        logger.info(f"csv file: {path} loaded successfully")
+        return df
 
     except Exception as e:
         raise e

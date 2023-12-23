@@ -20,4 +20,5 @@ class TrainingConfig:
     features: list
     n_splits: int
     lgb_params: dict
-    model_save_path: Path
+    weights_dir: Path
+    df_path: Path

@@ -2,7 +2,6 @@ features: ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B11', '
 n_splits: 5
 
 lgb_params: 
-  early_stopping_rounds: 15
   n_estimators': 16920
   learning_rate: 0.017776706659944297
   max_depth: 10

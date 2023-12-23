@@ -12,4 +12,4 @@ data_preparation:
 
 training:
   root_dir: artifacts/training
-  model_save_path: artifacts/training/model.lgb
+  weights_dir: artifacts/training/weights

@@ -4,7 +4,7 @@ from SolarPanelDetection.components.data_ingestion import DataIngestion
 
 STAGE_NAME = 'Data Ingestion Stage'
 
-class DataIngestionTrainingPipeline:
+class DataIngestionPipeline:
     def __init__(self):
         pass
 
@@ -19,7 +19,7 @@ class DataIngestionTrainingPipeline:
 if __name__=='__main__':
     try:
         logger.info(f"============= {STAGE_NAME} started =============")
-        obj = DataIngestionTrainingPipeline()
+        obj = DataIngestionPipeline()
         obj.main()
         logger.info(f"============= {STAGE_NAME} completed =============")
 
