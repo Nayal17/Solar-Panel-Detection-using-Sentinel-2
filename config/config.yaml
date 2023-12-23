@@ -5,3 +5,11 @@ data_ingestion:
   source_URL:  https://drive.google.com/file/d/1-o-_THTric8p6TeTAjCTwfWnv8F2ng3V/view?usp=sharing
   local_data_file: artifacts/data_ingestion/train.zip
   unzip_dir: artifacts/data_ingestion
+
+data_preparation:
+  root_dir: artifacts/data_preparation
+  df_save_path: artifacts/data_preparation/df.csv
+
+training:
+  root_dir: artifacts/training
+  model_save_path: artifacts/training/model.lgb
