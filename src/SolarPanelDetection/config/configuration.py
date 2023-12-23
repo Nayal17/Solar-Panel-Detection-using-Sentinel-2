@@ -1,8 +1,11 @@
 import os
 from SolarPanelDetection import logger
 from SolarPanelDetection.constants import *
-from SolarPanelDetection.utils.common import read_yaml, create_directories,save_json
-from SolarPanelDetection.entity.config_entity import DataIngestionConfig
+from SolarPanelDetection.utils.common import read_yaml, create_directories
+from SolarPanelDetection.entity.config_entity import (DataIngestionConfig,
+                                                      DataPreparationConfig,
+                                                      TrainingConfig,
+                                                    )
 
 
 class ConfigurationManager:
@@ -13,15 +16,40 @@ class ConfigurationManager:
         create_directories([Path(self.config.artifacts_root)])
         
     def get_data_ingestion_config(self)->DataIngestionConfig:
-        config = self.config.data_ingestion
+
+        create_directories([Path(self.config.data_ingestion.root_dir)])
 
         data_ingestion_config = DataIngestionConfig(
-            root_dir=config.root_dir,
-            source_URL=config.source_URL,
-            local_data_file=config.local_data_file,
-            unzip_dir=config.unzip_dir 
+            root_dir=self.config.data_ingestion.root_dir,
+            source_URL=self.config.data_ingestion.source_URL,
+            local_data_file=self.config.data_ingestion.local_data_file,
+            unzip_dir=self.config.data_ingestion.unzip_dir 
         )
 
         return data_ingestion_config
 
+    def get_data_preparation_config(self) -> DataPreparationConfig:
+        
+        create_directories([Path(self.config.data_preparation.root_dir)])
 
+        get_data_preparation_config = DataPreparationConfig(
+            features=self.params.features,
+            img_dir=os.path.join(self.config.data_ingestion.unzip_dir, "s2_image"),
+            mask_dir=os.path.join(self.config.data_ingestion.unzip_dir, "mask"),
+            dataframe_save_path = self.config.data_preparation.df_save_path
+        )
+
+        return get_data_preparation_config
+    
+    def get_training_config(self) -> TrainingConfig:
+
+        create_directories([Path(self.config.training.root_dir)])
+
+        prepare_training_config = TrainingConfig(
+            features=self.params.features,
+            n_splits=self.params.n_splits,
+            lgb_params=self.params.lbg_params,
+            model_save_path=self.config.training.model_save_path
+        )
+
+        return prepare_training_config
