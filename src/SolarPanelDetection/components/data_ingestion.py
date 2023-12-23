@@ -19,7 +19,6 @@ class DataIngestion:
         try:
             dataset_url = self.config.source_URL
             zip_download_dir = self.config.local_data_file
-            create_directories([Path("artifacts/data_ingestion")])
 
             file_id = dataset_url.split("/")[-2]
             prefix =  'https://drive.google.com/uc?/export=download&id='
