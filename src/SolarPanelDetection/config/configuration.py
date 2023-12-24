@@ -5,6 +5,7 @@ from SolarPanelDetection.utils.common import read_yaml, create_directories
 from SolarPanelDetection.entity.config_entity import (DataIngestionConfig,
                                                       DataPreparationConfig,
                                                       TrainingConfig,
+                                                      EvaluationConfig
                                                     )
 
 
@@ -34,6 +35,7 @@ class ConfigurationManager:
 
         get_data_preparation_config = DataPreparationConfig(
             features=self.params.features,
+            n_splits=self.params.n_splits,
             img_dir=os.path.join(self.config.data_ingestion.unzip_dir, "s2_image"),
             mask_dir=os.path.join(self.config.data_ingestion.unzip_dir, "mask"),
             dataframe_save_path = self.config.data_preparation.df_save_path
@@ -53,3 +55,13 @@ class ConfigurationManager:
         )
 
         return prepare_training_config
+
+    def get_evaluation_config(self) -> EvaluationConfig:
+
+        eval_config = EvaluationConfig(
+            weights_dir=self.config.training.weights_dir,
+            df_path=self.config.data_preparation.df_save_path,
+            mlflow_uri=os.environ['MLFLOW_TRACKING_URI'],
+            all_params=self.params,
+        )
+        return eval_config
