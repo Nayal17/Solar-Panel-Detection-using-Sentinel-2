@@ -4,12 +4,22 @@ import pandas as pd
 from pathlib import Path
 from SolarPanelDetection import logger
 from SolarPanelDetection.utils.common import read_tiff 
+from sklearn.model_selection import StratifiedGroupKFold
 from SolarPanelDetection.entity.config_entity import DataPreparationConfig
 
 
 class DataPreparation:
     def __init__(self, config: DataPreparationConfig):
         self.config = config
+
+    def create_cv_splits(self, df: pd.DataFrame):
+        sgkf = StratifiedGroupKFold(n_splits=self.config.n_splits, random_state=42, shuffle=True)
+
+        df['fold'] = -1
+        for fold, (t_idx, v_idx) in enumerate(sgkf.split(df, df['mask'], groups=df['image_no'])):
+            df.loc[v_idx, 'fold'] = fold
+
+        return df
 
     def get_features(self):
         img_dir = self.config.img_dir
@@ -34,5 +44,6 @@ class DataPreparation:
 
         data_list = np.vstack(data_list)
         df = pd.DataFrame(data_list, columns=features+['mask', 'image_no'])
+        df = self.create_cv_splits(df)
         df.to_csv(dataframe_save_path, index=False)
         logger.info("Features dataframe created")
