@@ -14,8 +14,8 @@ class TrainingPipeline:
         self.df = read_csv(Path(self.training_config.df_path))
 
     def main(self):
-        data_preparation = Training(self.df, self.training_config)
-        data_preparation.train()
+        training = Training(self.df, self.training_config)
+        training.train()
 
 
 if __name__=='__main__':
