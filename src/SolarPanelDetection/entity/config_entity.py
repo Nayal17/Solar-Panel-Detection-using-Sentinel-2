@@ -11,6 +11,7 @@ class DataIngestionConfig:
 @dataclass(frozen=True)
 class DataPreparationConfig:
     features: list
+    n_splits: int
     img_dir: Path
     mask_dir: Path
     dataframe_save_path: Path
@@ -22,3 +23,10 @@ class TrainingConfig:
     lgb_params: dict
     weights_dir: Path
     df_path: Path
+
+@dataclass(frozen=True)
+class EvaluationConfig:
+    weights_dir: Path
+    df_path: Path
+    all_params: dict
+    mlflow_uri: str
