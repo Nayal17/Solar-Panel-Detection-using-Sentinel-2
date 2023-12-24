@@ -2,5 +2,6 @@ __pycache__/
 
 env/
 logs/
+mlruns/
 artifacts/
 src/SolarPanelDetection.egg-info/
