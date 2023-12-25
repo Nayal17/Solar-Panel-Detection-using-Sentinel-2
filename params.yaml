@@ -2,8 +2,8 @@ features: ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B11', '
 n_splits: 5
 
 lgb_params: 
-  n_estimators': 16920
-  learning_rate: 0.017776706659944297
+  n_estimators': 20000
+  learning_rate: 0.1
   max_depth: 10
   num_leaves: 63
   feature_fraction: 0.8907348690528655
