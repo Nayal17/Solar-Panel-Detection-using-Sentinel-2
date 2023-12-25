@@ -38,8 +38,15 @@ class Evaluation:
         self.model = joblib.load(model_path)
     
     def evaluate(self):
+        metric_scores = []
+        losses = []
         for fold in range(self.config.all_params.n_splits):
-            self.scores = self.one_fold(fold, self.df)
+            fold_scores = self.one_fold(fold, self.df)
+            metric_scores.append(fold_scores['f1_score'])
+            losses.append(fold_scores['log_loss'])
+
+        self.avg_score = np.mean(metric_scores)
+        self.avg_loss = np.mean(losses)
 
     def log_into_mlflow(self):
         mlflow.set_registry_uri(self.config.mlflow_uri)
@@ -48,7 +55,7 @@ class Evaluation:
         with mlflow.start_run():
             mlflow.log_params(self.config.all_params)
             mlflow.log_metrics(
-                {"f1_score": self.scores['f1_score'], "log_loss": self.scores['log_loss']}
+                {"f1_score": self.avg_score, "log_loss": self.avg_loss}
             )
             
             if tracking_url_type_store != "file":
