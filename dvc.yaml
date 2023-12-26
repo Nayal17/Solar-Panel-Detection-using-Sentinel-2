@@ -1,0 +1,57 @@
+stages:
+
+  data_ingestion:
+
+    cmd: python src/SolarPanelDetection/pipeline/data_ingestion_stage.py
+
+    deps: 
+      - src/SolarPanelDetection/pipeline/data_ingestion_stage.py
+      - config/config.yaml
+
+    outs:
+      - artifacts/data_ingestion/mask
+      - artifacts/data_ingestion/s2_image
+      - artifacts/data_ingestion/train.zip
+
+
+  data_preparation:
+
+    cmd: python src/SolarPanelDetection/pipeline/data_preparation_stage.py
+
+    deps:
+      - src/SolarPanelDetection/pipeline/data_preparation_stage.py
+      - config/config.yaml
+
+    params:
+      - features
+      - n_splits
+
+    outs:
+      - artifacts/data_preparation/df.csv
+
+
+  training:
+
+    cmd: python src/SolarPanelDetection/pipeline/training_stage.py
+
+    deps:
+      - src/SolarPanelDetection/pipeline/training_stage.py
+      - config/config.yaml
+
+    params:
+      - features
+      - n_splits
+      - lgb_params
+
+    outs:
+      - artifacts/training/weights
+
+  evaluation:
+
+    cmd: python src/SolarPanelDetection/pipeline/model_evaluation_stage.py
+
+    deps:
+      - src/SolarPanelDetection/pipeline/model_evaluation_stage.py
+      - config/config.yaml
+      - artifacts/data_preparation/df.csv
+      - artifacts/training/weights

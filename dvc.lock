@@ -1,0 +1,152 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/SolarPanelDetection/pipeline/data_ingestion_stage.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 28ca54bf39c5727fe2bd3b332d9a6795
+      size: 462
+    - path: src/SolarPanelDetection/pipeline/data_ingestion_stage.py
+      hash: md5
+      md5: 26f3d500d378ce6341e00c836aac3259
+      size: 879
+    outs:
+    - path: artifacts/data_ingestion/mask
+      hash: md5
+      md5: 084c77a7daf1f30a919fb1a226e2af13.dir
+      size: 1435208
+      nfiles: 2066
+    - path: artifacts/data_ingestion/s2_image
+      hash: md5
+      md5: 7843e28ce6e32572aebda5069aedd5c2.dir
+      size: 109393758
+      nfiles: 2066
+    - path: artifacts/data_ingestion/train.zip
+      hash: md5
+      md5: 3a33876ec96879e93d75bc9eb014be71
+      size: 81387574
+  data_preparation:
+    cmd: python src/SolarPanelDetection/pipeline/data_preparation_stage.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 28ca54bf39c5727fe2bd3b332d9a6795
+      size: 462
+    - path: src/SolarPanelDetection/pipeline/data_preparation_stage.py
+      hash: md5
+      md5: 3a1c9c3f78a4cd57c0b7e9e51576c1da
+      size: 845
+    params:
+      params.yaml:
+        features:
+        - B1
+        - B2
+        - B3
+        - B4
+        - B5
+        - B6
+        - B7
+        - B8
+        - B8A
+        - B9
+        - B11
+        - B12
+        n_splits: 5
+    outs:
+    - path: artifacts/data_preparation/df.csv
+      hash: md5
+      md5: feec65e438e080997d23810e19f6412b
+      size: 240301310
+  training:
+    cmd: python src/SolarPanelDetection/pipeline/training_stage.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 28ca54bf39c5727fe2bd3b332d9a6795
+      size: 462
+    - path: src/SolarPanelDetection/pipeline/training_stage.py
+      hash: md5
+      md5: bbcbb1e33fe0304ea68fa5f33fb0e64b
+      size: 909
+    params:
+      params.yaml:
+        features:
+        - B1
+        - B2
+        - B3
+        - B4
+        - B5
+        - B6
+        - B7
+        - B8
+        - B8A
+        - B9
+        - B11
+        - B12
+        lgb_params:
+          n_estimators': 20000
+          learning_rate: 0.1
+          max_depth: 10
+          num_leaves: 63
+          feature_fraction: 0.8907348690528655
+          bagging_fraction: 0.8289630758483597
+          bagging_freq: 1
+          random_state: 42
+        n_splits: 5
+    outs:
+    - path: artifacts/training/weights/fold_0.pkl
+      hash: md5
+      md5: 2a04b2cfef4f33914916d1c262bfdb05
+      size: 692484
+    - path: artifacts/training/weights/fold_1.pkl
+      hash: md5
+      md5: 91bf394d7dfb1d9927dc9699f1cd1876
+      size: 692468
+    - path: artifacts/training/weights/fold_2.pkl
+      hash: md5
+      md5: 489920d465b4354dbaf100be46a4edb0
+      size: 692324
+    - path: artifacts/training/weights/fold_3.pkl
+      hash: md5
+      md5: 1d7752e9307a1de882acb3fd47626874
+      size: 692724
+    - path: artifacts/training/weights/fold_4.pkl
+      hash: md5
+      md5: 01b818ce263dc7b8f067674bb9c9f07e
+      size: 692180
+  evaluation:
+    cmd: python src/SolarPanelDetection/pipeline/model_evaluation_stage.py
+    deps:
+    - path: artifacts/data_preparation/df.csv
+      hash: md5
+      md5: feec65e438e080997d23810e19f6412b
+      size: 240301310
+    - path: artifacts/training/weights/fold_0.pkl
+      hash: md5
+      md5: 2a04b2cfef4f33914916d1c262bfdb05
+      size: 692484
+    - path: artifacts/training/weights/fold_1.pkl
+      hash: md5
+      md5: 91bf394d7dfb1d9927dc9699f1cd1876
+      size: 692468
+    - path: artifacts/training/weights/fold_2.pkl
+      hash: md5
+      md5: 489920d465b4354dbaf100be46a4edb0
+      size: 692324
+    - path: artifacts/training/weights/fold_3.pkl
+      hash: md5
+      md5: 1d7752e9307a1de882acb3fd47626874
+      size: 692724
+    - path: artifacts/training/weights/fold_4.pkl
+      hash: md5
+      md5: 01b818ce263dc7b8f067674bb9c9f07e
+      size: 692180
+    - path: config/config.yaml
+      hash: md5
+      md5: 28ca54bf39c5727fe2bd3b332d9a6795
+      size: 462
+    - path: src/SolarPanelDetection/pipeline/model_evaluation_stage.py
+      hash: md5
+      md5: ffa1cd33b8ec5aa6d7fc2dd7a544988f
+      size: 986
