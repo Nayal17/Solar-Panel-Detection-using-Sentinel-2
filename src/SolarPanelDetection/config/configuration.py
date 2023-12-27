@@ -5,7 +5,8 @@ from SolarPanelDetection.utils.common import read_yaml, create_directories
 from SolarPanelDetection.entity.config_entity import (DataIngestionConfig,
                                                       DataPreparationConfig,
                                                       TrainingConfig,
-                                                      EvaluationConfig
+                                                      EvaluationConfig,
+                                                      PredictionConfig
                                                     )
 
 
@@ -65,3 +66,10 @@ class ConfigurationManager:
             all_params=self.params,
         )
         return eval_config
+    
+    def get_prediction_config(self) -> PredictionConfig:
+
+        predict_config = PredictionConfig(
+            n_splits=self.params.n_splits,
+        )
+        return predict_config
