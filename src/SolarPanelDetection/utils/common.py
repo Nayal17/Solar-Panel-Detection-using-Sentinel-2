@@ -1,8 +1,7 @@
 import os
 import yaml
 import json
-import joblib
-import base64
+import shutil
 import tifffile
 import numpy as np
 import pandas as pd
@@ -51,6 +50,23 @@ def create_directories(path_to_directories: list, verbose=True):
         os.makedirs(path, exist_ok=True)
         if verbose:
             logger.info(f"created directory at: {path}")
+
+
+@ensure_annotations
+def copy_tree(src: str, dst: str, verbose=True):
+    """copy a directory
+
+    Args:
+        src: source directory
+        dst: destination directory
+        verbose: logs src and dst paths
+    """
+    if not os.path.exists(dst):
+        shutil.copytree(src, dst)
+
+    if verbose:
+        logger.info(f"Copied files from {src} to {dst}")
+
 
 @ensure_annotations
 def read_tiff(path: Path) -> np.ndarray:
@@ -110,47 +126,6 @@ def load_json(path: Path) -> ConfigBox:
     logger.info(f"json file loaded succesfully from: {path}")
     return ConfigBox(content)
 
-
-@ensure_annotations
-def save_json(path: Path, data: dict):
-    """save json data
-
-    Args:
-        path (Path): path to json file
-        data (dict): data to be saved in json file
-    """
-    with open(path, "w") as f:
-        json.dump(data, f, indent=4)
-
-    logger.info(f"json file saved at: {path}")
-
-
-@ensure_annotations
-def save_bin(data: Any, path: Path):
-    """save binary file
-
-    Args:
-        data (Any): data to be saved as binary
-        path (Path): path to binary file
-    """
-    joblib.dump(value=data, filename=path)
-    logger.info(f"binary file saved at: {path}")
-
-
-@ensure_annotations
-def load_bin(path: Path) -> Any:
-    """load binary data
-
-    Args:
-        path (Path): path to binary file
-
-    Returns:
-        Any: object stored in the file
-    """
-    data = joblib.load(path)
-    logger.info(f"binary file loaded from: {path}")
-    return data
-
 @ensure_annotations
 def get_size(path: Path) -> str:
     """get size in KB
@@ -163,4 +138,3 @@ def get_size(path: Path) -> str:
     """
     size_in_kb = round(os.path.getsize(path)/1024)
     return f"~ {size_in_kb} KB"
-

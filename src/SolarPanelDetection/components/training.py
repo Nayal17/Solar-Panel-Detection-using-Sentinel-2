@@ -5,6 +5,7 @@ import lightgbm as lgb
 from pathlib import Path
 
 from SolarPanelDetection import logger
+from SolarPanelDetection.utils.common import copy_tree
 from SolarPanelDetection.entity.config_entity import TrainingConfig
 
 class Training:
@@ -31,3 +32,4 @@ class Training:
         for fold in range(self.config.n_splits):
             model = self.one_fold(fold)
             self.save_model(fold, model)
+        copy_tree(self.config.weights_dir, "models")
