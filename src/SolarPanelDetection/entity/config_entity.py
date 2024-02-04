@@ -30,7 +30,3 @@ class EvaluationConfig:
     df_path: Path
     all_params: dict
     mlflow_uri: str
-
-@dataclass(frozen=True)
-class PredictionConfig:
-    n_splits: int
