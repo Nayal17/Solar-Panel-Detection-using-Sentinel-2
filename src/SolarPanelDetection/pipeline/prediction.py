@@ -1,6 +1,7 @@
 import os
 import joblib
 import numpy as np
+from PIL import Image
 from SolarPanelDetection.utils.common import read_tiff
 from SolarPanelDetection.entity.config_entity import PredictionConfig
 
