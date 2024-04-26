@@ -16,4 +16,4 @@ Source: https://solafune.com/competitions/5dfc315c-1b24-4573-804f-7de8d707cd90?m
 - Run ```python main.py``` to run complete pipeline including data ingestion, training, evaluation and saving weights.
 - For testing model performance on already trained models, build a docker image which have fasapi prediction endpoints.
 - Run ```docker build -t <image-name> .``` to build your own docker image.
-- Run docker image ```docker run --name <contaienr-name> -p 8000:8000 <image-name>```
+- Run docker image ```docker run --name <container-name> -p 8000:8000 <image-name>```
